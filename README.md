@@ -1,2 +1,2 @@
 # Resume_builder-using-reactjs
-Resume builder made using reactjs
+Resume builder made using reactjs and node
