@@ -1,13 +1,21 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import InputControl from "../InputControl/InputControl";
 import styles from "./Editor.module.css";
+import { X } from "react-feather";
 
 const Editor = (props) => {
   const sections = props.sections;
+  const information=props.information;
+
   //for accessing the first section by default using keys
   //jo bhi keys hai wo array return karta hai
   const [activeSectionkey, setActiveSectionkey] = useState(
     Object.keys(sections)[0]
+  );
+
+  //by deafult 1 work experience is selected
+  const [activeInformation,setActiveInformation]=useState(
+    information[sections[Object.keys(sections)[0]]]
   );
 
   // const [values, setValues] = useState({
@@ -316,8 +324,7 @@ const Editor = (props) => {
     </div>
   );
 
-
-  const generateBody=()=>{
+  const generateBody = () => {
     switch (sections[activeSectionkey]) {
       case sections.basicInfo:
         return basicInfoBody;
@@ -336,8 +343,12 @@ const Editor = (props) => {
       default:
         return null;
     }
+  };
 
-  }
+
+  useEffect(() => {
+    setActiveInformation(information[sections[activeSectionkey]]);
+  }, [information]);
 
   return (
     <div className={styles.container}>
@@ -358,6 +369,17 @@ const Editor = (props) => {
       <div className={styles.body}>
         <InputControl label="Title" placeholder="Enter section title" />
 
+        <div className={styles.chips}>
+          {
+            activeInformation?Editor.details
+            ? activeInformation?.details?.map((item,index)=>(
+            <div className={styles.chips} key={item.title+index}>
+              <p>{sections[activeSectionkey]} {index+1}</p>
+            <X />
+          </div>
+            ))
+            : ""}
+        </div>
         {generateBody()}
       </div>
     </div>
